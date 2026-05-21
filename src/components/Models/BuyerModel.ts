@@ -13,17 +13,20 @@ export class BuyerModel {
         this._payment = null;
     }
 
-    setField(field: keyof IBuyer, value: string): void {
-        if (field === "payment") {
-            this._payment = value as TPayment;
-        } else if (field === "email") {
-            this._email = value as string;
-        } else if (field === "address") {
-            this._address = value as string;
-        } else if (field === "phone") {
-            this._phone = value as string;
-        }
-    }
+    setField(data: Partial<IBuyer>): void { 
+        if (data.payment !== undefined) { 
+            this._payment = data.payment; 
+        } 
+        if (data.email !== undefined) { 
+            this._email = data.email; 
+        } 
+        if (data.phone !== undefined) { 
+            this._phone = data.phone; 
+        } 
+        if (data.address !== undefined) { 
+            this._address = data.address; 
+        } 
+    }  
 
     getData(): IBuyer {
         return {
