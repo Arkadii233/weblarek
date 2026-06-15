@@ -1,6 +1,9 @@
 import { Card, ICard, ICardActions } from "./Card";
 import { ensureElement } from "../../utils/utils";
 
+export interface ICardBasketData extends ICard {
+  index: number;
+}
 
 export class CardBasket extends Card<ICard> {
   private indexElement: HTMLElement;
@@ -19,5 +22,11 @@ export class CardBasket extends Card<ICard> {
 
   set index(valueIndex: number) {
     this.indexElement.textContent = valueIndex.toString();
+  }
+  render(data: ICardBasketData): HTMLElement {
+    this.title = data.title;
+    this.price = data.price;
+    this.index = data.index;
+    return this.container;
   }
 }

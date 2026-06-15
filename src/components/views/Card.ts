@@ -26,10 +26,6 @@ export class Card<T> extends Component<T> {
 
     this.titleElement = ensureElement<HTMLElement>('.card__title', container);
     this.priceElement = ensureElement<HTMLElement>('.card__price', container);
-
-    if (actions?.onClick) {
-      container.addEventListener('click', actions.onClick);
-    }
   }
 
   set title(strTitle: string) {

@@ -51,5 +51,15 @@ export class CardPreview extends Card<ICard> {
         this.buttonElement.disabled = checkResult;
     }
   }
-
+  render(data: ICardPreview): HTMLElement {
+    if (data.title) this.title = data.title;
+    if (data.price !== undefined) this.price = data.price;
+    if (data.category) this.category = data.category;
+    if (data.image) this.image = data.image;
+    if (data.description) this.description = data.description;
+    if (data.buttonText) this.buttonText = data.buttonText;
+    if (data.disabledButton !== undefined) this.disabledButton = data.disabledButton;
+    
+    return this.container;
+  }
 }

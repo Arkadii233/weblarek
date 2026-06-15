@@ -1,11 +1,6 @@
 export type TPayment = "card" | "cash" | null;
 
-export type TCheckError = {
-  payment?: string;
-  email?: string;
-  phone?: string;
-  address?: string;
-};
+export type TCheckError = Partial<Record<keyof IBuyer, string>>;
 
 export type ApiPostMethods = "POST" | "PUT" | "DELETE";
 

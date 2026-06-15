@@ -51,23 +51,15 @@ events.on("card:select", (product: IProduct) => {
 const cardPreviewTemplate = ensureElement<HTMLTemplateElement>("#card-preview");
 const modal = new Modal(ensureElement<HTMLElement>("#modal-container"), events);
 const cardPreview = new CardPreview(cloneTemplate(cardPreviewTemplate), {
-  onClick: () => {
-    const product = productModel.getSelectedProduct();
-    if (product) {
-      events.emit("card:to-basket", product);
-    }
-  },
-});
+  onClick: () => events.emit("card:to-basket"), 
+}); 
 
 events.on("preview:changed", (product: IProduct) => {
-  modal.render({
-    content: cardPreview.render({
-      ...product,
-      buttonText: cartModel.checkProductCartById(product.id)
-        ? "Удалить из корзины"
-        : "В корзину",
-    }),
-  });
+  const buttonText = product.price === null 
+    ? "Не продается" 
+    : cartModel.checkProductCartById(product.id)
+      ? "Удалить из корзины" 
+      : "В корзину";
 
   let buttonInitialText = cartModel.checkProductCartById(product.id)
     ? "Удалить из корзины"
@@ -133,14 +125,6 @@ events.on("cart:changed", () => {
     total: cartModel.getTotalPrice(),
   });
 
-  const selectedProduct = productModel.getSelectedProduct();
-  if (selectedProduct) {
-    cardPreview.buttonText = cartModel.checkProductCartById(selectedProduct.id)
-      ? "Удалить из корзины"
-      : "В корзину";
-  }
-});
-
 events.on("card:remove", (product: IProduct) => {
   cartModel.delProductCart(product);
 });
@@ -153,26 +137,12 @@ const contactsTemplate = ensureElement<HTMLTemplateElement>("#contacts");
 const successTemplate = ensureElement<HTMLTemplateElement>("#success");
 
 const orderForm = new FormOrder(cloneTemplate(orderTemplate), {
-  onInput: (field, value) => {
-    if (field === "address") {
-      buyerModel.setDataBuyer({ address: value });
-    } else if (field === "payment") {
-      buyerModel.setDataBuyer({
-        payment: value === "card" || value === "cash" ? value : null,
-      });
-    }
-  },
+  onInput: (field, value) => events.emit('buyer:change', { field, value }),
   onSubmit: () => events.emit("order:submit"),
 });
 
 const contactsForm = new FormContacts(cloneTemplate(contactsTemplate), {
-  onInput: (field, value) => {
-    if (field === "email") {
-      buyerModel.setDataBuyer({ email: value });
-    } else if (field === "phone") {
-      buyerModel.setDataBuyer({ phone: value });
-    }
-  },
+  onInput: (field, value) => events.emit('buyer:change', { field, value }),
   onSubmit: () => events.emit("contacts:submit"),
 });
 
@@ -211,10 +181,12 @@ events.on("order:submit", () => {
   });
 });
 
-const success = new Success(cloneTemplate(successTemplate), {
-  onClick: () => {
-    modal.closeModal();
-  },
+const success = new Success(cloneTemplate(successTemplate), { 
+  onClick: () => events.emit("success:close"),
+}); 
+
+events.on("success:close", () => {
+  modal.closeModal();
 });
 
 events.on("contacts:submit", () => {
