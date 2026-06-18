@@ -51,7 +51,7 @@ export class CardPreview extends Card<ICard> {
         this.buttonElement.disabled = checkResult;
     }
   }
-  render(data: ICardPreview): HTMLElement {
+  render(data: CardPreview): HTMLElement {
     if (data.title) this.title = data.title;
     if (data.price !== undefined) this.price = data.price;
     if (data.category) this.category = data.category;

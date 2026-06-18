@@ -124,7 +124,7 @@ events.on("cart:changed", () => {
     list: items,
     total: cartModel.getTotalPrice(),
   });
-
+});
 events.on("card:remove", (product: IProduct) => {
   cartModel.delProductCart(product);
 });
