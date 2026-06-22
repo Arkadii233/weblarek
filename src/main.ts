@@ -84,12 +84,30 @@ events.on("preview:changed", (product: IProduct) => {
 const cartModel = new Cart(events);
 const header = new Header(ensureElement<HTMLElement>(".header"), events);
 
-events.on("card:to-basket", (product: IProduct) => {
+events.on("card:to-basket", () => {
+  // Берём выбранный продукт из модели
+  const product = productModel.getSelectedProduct();
+  
+  // Проверяем, что продукт существует
+  if (!product) {
+    console.error("Товар не выбран");
+    return;
+  }
+  
+  // Проверяем цену (бесценные товары нельзя добавить)
+  if (product.price === null) {
+    alert("Этот товар не продается");
+    return;
+  }
+  
+  // Добавляем или удаляем из корзины
   if (!cartModel.checkProductCartById(product.id)) {
     cartModel.setProductCart(product);
   } else {
     cartModel.delProductCart(product);
   }
+  
+  // Закрываем модальное окно
   modal.closeModal();
 });
 
