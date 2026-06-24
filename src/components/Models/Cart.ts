@@ -12,7 +12,7 @@ export class Cart {
 
   setProductCart(product: IProduct): void {
     this.productCart.push(product);
-    this.events.emit('cart:changed', this.getProductCart);
+    this.events.emit('cart:changed', this.getProductCart());
   }
 
   delProductCart(product: IProduct): void {
@@ -20,12 +20,12 @@ export class Cart {
         (item) => item.id !== product.id,
       );
     
-    this.events.emit('cart:changed', this.getProductCart);
+    this.events.emit('cart:changed', this.getProductCart());
   }
 
   clearCart(): void {
     this.productCart = [];
-    this.events.emit('cart:changed', this.getProductCart);
+    this.events.emit('cart:changed', this.getProductCart());
   }
 
   getTotalPrice(): number {

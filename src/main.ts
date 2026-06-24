@@ -150,6 +150,10 @@ events.on("card:remove", (product: IProduct) => {
 // оформление заказа
 const buyerModel = new Buyer(events);
 
+events.on('buyer:change', (data: { field: string; value: string }) => {
+    buyerModel.setDataBuyer({ [data.field]: data.value });
+});
+
 const orderTemplate = ensureElement<HTMLTemplateElement>("#order");
 const contactsTemplate = ensureElement<HTMLTemplateElement>("#contacts");
 const successTemplate = ensureElement<HTMLTemplateElement>("#success");
